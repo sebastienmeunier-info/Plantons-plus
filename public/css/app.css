@@ -39,6 +39,12 @@ fieldset { border: 0; padding: 0; } legend { margin-bottom: .55rem; }.objective-
 .user-row.is-protected { cursor: not-allowed; opacity: .7; }.user-row.is-protected > * { pointer-events: none; }
 .plantations-workspace { display: grid; grid-template-columns: minmax(0, 1fr) minmax(40rem, 1.8fr); gap: 1rem; align-items: start; }.plantations-map-panel { position: sticky; top: 5rem; padding: .9rem; border: 1px solid var(--line); border-radius: .65rem; background: var(--panel-raised); }.plantations-map-panel h3, .plantations-map-panel p { margin-top: 0; }.plantations-map-panel .account-map { margin-bottom: 0; } .admin-objectives { grid-template-columns: repeat(2, minmax(0, 1fr)); } .admin-objectives .objective-tile { min-height: 5.5rem; font-size: .82rem; } .admin-objectives .objective-icon { inline-size: 2.2rem; block-size: 2.2rem; font-size: 1.25rem; } @media (max-width: 62rem) { .plantations-workspace { grid-template-columns: 1fr; }.plantations-map-panel { position: static; order: -1; } }
 .proposal-details { margin-top: 1rem; padding-top: 1rem; border-top: 1px solid var(--line); }
+.pepinieres-workspace { display: grid; gap: 1rem; }
+.pepinieres-slots { display: grid; gap: .45rem; margin: 0 0 1rem; padding: 0; list-style: none; }
+.pepinieres-slots li { display: flex; align-items: center; gap: .7rem; padding: .5rem .7rem; border: 1px solid var(--line); border-radius: .45rem; background: var(--panel-raised); }
+.pepinieres-slots strong { min-width: 2.2rem; }
+.pepiniere-slot-status { flex: 1; color: var(--muted); }
+.pepiniere-marker { display: grid; place-items: center; width: 2.35rem; height: 2.35rem; border: 2px solid #72dc8f; border-radius: 50%; color: #fff; background: #1b4a2c; font-weight: 800; }
 .proposal-messages { margin-top: 1rem; padding-top: .85rem; border-top: 1px solid var(--line); } .proposal-messages h5 { margin: 0 0 .6rem; }
 .proposal-messages-list { display: grid; gap: .55rem; margin: 0; padding: 0; list-style: none; }
 .proposal-message { display: grid; gap: .25rem; max-width: 85%; padding: .5rem .7rem; border: 1px solid var(--line); border-radius: .8rem; background: var(--panel-raised); }

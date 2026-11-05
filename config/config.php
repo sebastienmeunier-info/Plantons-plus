@@ -78,6 +78,10 @@ return [
             'file' => getenv('PLANTONS_SECTORS_GEOJSON_FILE') ?: $root . '/data/communes-deleguees.geojson',
             'url' => getenv('PLANTONS_SECTORS_GEOJSON_URL') ?: (getenv('PLANTONS_MUNICIPALITIES_GEOJSON_URL') ?: '/api/data/secteurs'),
         ],
+        'pepinieres' => [
+            'file' => getenv('PLANTONS_PEPINIERES_GEOJSON_FILE') ?: $root . '/data/pepinieres.geojson',
+            'url' => getenv('PLANTONS_PEPINIERES_GEOJSON_URL') ?: '/api/data/pepinieres',
+        ],
     ],
     'geocoding' => [
         // Service public IGN/BAN : à conserver modifiable pour un autre territoire
