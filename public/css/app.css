@@ -36,7 +36,7 @@ fieldset { border: 0; padding: 0; } legend { margin-bottom: .55rem; }.objective-
 .proposal-marker--triangle.proposal-marker--rejected { --tri-color: #d94343; }
 .proposal-marker--triangle.proposal-marker--validated { --tri-color: #2db55d; }
 .proposal-marker--triangle.proposal-marker--remarkable { --tri-color: #b8860b; }
-.legend-marker--square { border: 2px solid #fff; border-radius: .2rem; }
+.legend-marker.legend-marker--square { border: 2px solid #fff; border-radius: .2rem; }
 .legend-marker.legend-marker--triangle { position: relative; background: transparent; clip-path: none; --tri-color: #ff8a1f; }
 .legend-marker--triangle::before, .legend-marker--triangle::after { content: ''; position: absolute; inset: 0; clip-path: polygon(50% 0, 100% 100%, 0 100%); }
 .legend-marker--triangle::before { inset: -2px; background: #fff; }
