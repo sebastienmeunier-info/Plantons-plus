@@ -8,6 +8,7 @@ button { cursor: pointer; }
 .intro h1 { margin: 0 0 .25rem; color: #fff; font-size: clamp(1.7rem, 7vw, 2.4rem); }.intro p { margin: 0; color: var(--muted); }
 .map-panel, .form-panel { padding: 1rem; border: 1px solid var(--line); border-radius: .8rem; background: var(--panel); box-shadow: 0 2px 10px #0008; }
 .overview-layout { display: grid; grid-template-columns: minmax(0, 1.7fr) minmax(0, 1fr); gap: 1rem; align-items: stretch; }
+.overview-layout, .overview-legend { grid-column: 1 / -1; }
 .overview-map-panel { display: flex; flex-direction: column; }
 .overview-map { flex: 1; min-height: 32rem; border-radius: .55rem; overflow: hidden; border: 1px solid #5a7160; }
 .overview-description { overflow-wrap: anywhere; }
