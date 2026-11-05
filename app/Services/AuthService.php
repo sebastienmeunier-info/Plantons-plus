@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Plantons\Services;
 
 use Plantons\Repositories\UserRepository;
+use RuntimeException;
 
 final class AuthService
 {
@@ -52,6 +53,13 @@ final class AuthService
         }
         $secure = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off')
             || ((string) ($_SERVER['HTTP_X_FORWARDED_PROTO'] ?? '') === 'https');
+        $sessionsPath = (string) ($this->config['sessions_path'] ?? '');
+        if ($sessionsPath !== '') {
+            if (!is_dir($sessionsPath) && !mkdir($sessionsPath, 0700, true) && !is_dir($sessionsPath)) {
+                throw new RuntimeException('Impossible de créer le répertoire de sessions.');
+            }
+            session_save_path($sessionsPath);
+        }
         ini_set('session.use_strict_mode', '1');
         session_set_cookie_params(['httponly' => true, 'secure' => $secure, 'samesite' => 'Lax']);
         session_start();

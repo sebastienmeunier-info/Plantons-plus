@@ -256,6 +256,11 @@ return [
     'auth' => [
         'users_file' => $root . '/data/utilisateurs.json',
         'password_resets_file' => $root . '/data/reinitialisations.json',
+        // Répertoire de stockage des sessions PHP. Sur un hébergement mutualisé
+        // multi-serveurs (OVH, etc.), le répertoire par défaut n'est PAS partagé
+        // entre les serveurs : les sessions étaient perdues aléatoirement
+        // (« Session expirée »). Un répertoire local règle le problème.
+        'sessions_path' => getenv('PLANTONS_SESSIONS_PATH') ?: $root . '/data/sessions',
         // Nom de la variable de session conservant l'utilisateur connecté.
         'session_key' => 'plantons_user_id',
         // E-mails promus administrateur / super-admin au premier lancement.

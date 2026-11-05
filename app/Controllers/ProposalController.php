@@ -120,8 +120,7 @@ final class ProposalController
 
     private function verifyCsrf(string $token): void
     {
-        if (session_status() !== PHP_SESSION_ACTIVE) { session_start(); }
-        if ($token === '' || !hash_equals((string) ($_SESSION['csrf_token'] ?? ''), $token)) {
+        if (!$this->auth()->verifyCsrf($token)) {
             throw new InvalidArgumentException('Votre session a expiré. Veuillez recharger la page.');
         }
     }
