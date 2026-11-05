@@ -14,7 +14,7 @@ $headerLabel = $headerText !== '' ? $headerText : $defaultHeaderText;
       <a class="menu-button menu-proposal<?= ($treeProposal ?? false) ? ' menu-current' : '' ?>" href="<?= htmlspecialchars($routeUrl('/proposer-un-arbre'), ENT_QUOTES, 'UTF-8') ?>">Donner un arbre</a>
       <a class="menu-button menu-proposal<?= ($isCensus ?? false) ? ' menu-current' : '' ?>" href="<?= htmlspecialchars($routeUrl('/recenser-un-arbre'), ENT_QUOTES, 'UTF-8') ?>">Recenser un arbre</a>
       <a class="menu-button" href="<?= htmlspecialchars($routeUrl('/a-propos'), ENT_QUOTES, 'UTF-8') ?>">À propos</a>
-      <a class="menu-button menu-admin" href="<?= htmlspecialchars($routeUrl('/mon-compte'), ENT_QUOTES, 'UTF-8') ?>">Espace Admin</a>
+      <a class="menu-button menu-admin<?= ($tab ?? null) !== null ? ' menu-current' : '' ?>" href="<?= htmlspecialchars($routeUrl('/mon-compte'), ENT_QUOTES, 'UTF-8') ?>">Espace Admin</a>
       <a class="menu-button" href="<?= htmlspecialchars($routeUrl('/donnees-personnelles'), ENT_QUOTES, 'UTF-8') ?>">Infos RGPD</a>
       <form class="logout-form" method="post" action="<?= htmlspecialchars($routeUrl('/deconnexion'), ENT_QUOTES, 'UTF-8') ?>"><input type="hidden" name="csrf_token" value="<?= htmlspecialchars($csrfToken ?? '', ENT_QUOTES, 'UTF-8') ?>"><button class="menu-button menu-logout">Déconnexion</button></form>
     <?php else: ?>
