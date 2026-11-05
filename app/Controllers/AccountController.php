@@ -24,14 +24,15 @@ final class AccountController
 
         $isAdministrator = in_array($user['role'], ['administrateur', 'super_administrateur'], true);
         $tab = (string) $request->query('onglet', 'profil');
-        $allowedTabs = $isAdministrator ? ['profil', 'plantations', 'dons', 'pepinieres', 'utilisateurs', 'exports', 'statistiques'] : ['profil', 'plantations', 'statistiques'];
+        $allowedTabs = $isAdministrator ? ['profil', 'plantations', 'dons', 'recensements', 'pepinieres', 'utilisateurs', 'exports', 'statistiques'] : ['profil', 'plantations', 'statistiques'];
         if (!in_array($tab, $allowedTabs, true)) { $tab = 'profil'; }
 
         $store = new GeoJsonStore();
         $userRepository = new UserRepository($this->app->config('auth')['users_file']);
         $sources = $this->app->config('data_sources');
         $isDonationTab = $tab === 'dons';
-        $allFeatures = $store->read($sources[$isDonationTab ? 'donations' : 'proposals']['file'])['features'];
+        $isCensusTab = $tab === 'recensements';
+        $allFeatures = $store->read($sources[$isDonationTab ? 'donations' : ($isCensusTab ? 'trees' : 'proposals')]['file'])['features'];
         $features = array_values(array_filter($allFeatures, static fn(array $feature): bool => ($feature['properties']['email'] ?? '') === $user['email']));
         $displayFeatures = $isAdministrator ? $allFeatures : $features;
         if ($isAdministrator) {
@@ -79,7 +80,7 @@ final class AccountController
             'application' => $this->app->config('app'), 'csrfToken' => $auth->csrfToken(), 'user' => $user,
             'tab' => $tab, 'isAdministrator' => $isAdministrator, 'counts' => $counts, 'features' => $features,
             'displayFeatures' => $displayFeatures, 'statuses' => $this->app->config('proposals')['status_labels'],
-            'planting' => $this->app->config('planting'), 'isDonationTab' => $isDonationTab, 'geocoding' => $this->app->config('geocoding'),
+            'planting' => $this->app->config('planting'), 'isDonationTab' => $isDonationTab, 'isCensusTab' => $isCensusTab, 'geocoding' => $this->app->config('geocoding'),
             'notice' => $request->query('pepinieres') === 'enregistrees'
                 ? 'Les positions des pépinières ont été enregistrées.'
                 : ($request->query('import') === 'done'

@@ -37,6 +37,11 @@ final class AdminProposalController
         $this->updateForSource($request, 'donations', 'dons');
     }
 
+    public function updateCensus(Request $request): never
+    {
+        $this->updateForSource($request, 'trees', 'recensements');
+    }
+
     private function updateForSource(Request $request, string $source, string $tab): never
     {
         try {
@@ -76,10 +81,12 @@ final class AdminProposalController
                 if (!array_key_exists($conditioning, $planting['tree_conditioning'])) { throw new InvalidArgumentException('Conditionnement invalide.'); }
                 if (!array_key_exists($treeSize, $planting['tree_sizes'])) { throw new InvalidArgumentException('Taille invalide.'); }
                 $changes += ['conditioning' => $conditioning, 'tree_size' => $treeSize, 'objectives' => []];
-            } else {
+            } elseif ($source === 'proposals') {
                 if ($objectives === [] || array_diff($objectives, array_keys($planting['objectives'])) !== []) { throw new InvalidArgumentException('Objectifs invalides.'); }
                 if (count($objectives) > $planting['max_objectives_per_proposal']) { throw new InvalidArgumentException('Trois objectifs maximum sont autorisés.'); }
                 $changes['objectives'] = $objectives;
+            } else {
+                $changes['objectives'] = [];
             }
             $store = new GeoJsonStore();
             $sources = $this->app->config('data_sources');

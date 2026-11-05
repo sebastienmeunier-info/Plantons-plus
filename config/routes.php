@@ -48,6 +48,7 @@ return [
     ['GET', '/admin/propositions', [AdminProposalController::class, 'index']],
     ['POST', '/admin/propositions/modifier', [AdminProposalController::class, 'update']],
     ['POST', '/admin/dons/modifier', [AdminProposalController::class, 'updateDonation']],
+    ['POST', '/admin/arbres/modifier', [AdminProposalController::class, 'updateCensus']],
     ['GET', '/admin/pepinieres', [AdminPepiniereController::class, 'index']],
     ['POST', '/admin/pepinieres/modifier', [AdminPepiniereController::class, 'update']],
     ['GET', '/ma-proposition', [MyProposalController::class, 'show']],
