@@ -89,13 +89,33 @@ final class AdminProposalController
                 throw new RuntimeException('Proposition introuvable.');
             }
             $messages = array_values(array_filter((array) ($previous['properties']['messages'] ?? []), 'is_array'));
+            $modifications = $this->modifications($source, $previous, [
+                'status' => [$status, (string) ($previous['properties']['status'] ?? ''), $statuses],
+                'species' => [$species, (string) ($previous['properties']['species'] ?? '')],
+                'objectives' => [$objectives, array_values((array) ($previous['properties']['objectives'] ?? []))],
+                'conditioning' => [$source === 'donations' ? $conditioning : null, $source === 'donations' ? (string) ($previous['properties']['conditioning'] ?? '') : null],
+                'tree_size' => [$source === 'donations' ? $treeSize : null, $source === 'donations' ? (string) ($previous['properties']['tree_size'] ?? '') : null],
+                'coordinates' => [[$longitude, $latitude], array_values((array) ($previous['geometry']['coordinates'] ?? []))],
+            ], $planting);
+            $now = date(DATE_ATOM);
+            $administratorName = trim((string) ($current['first_name'] ?? '') . ' ' . (string) ($current['last_name'] ?? '')) ?: 'Administration';
+            if ($modifications !== []) {
+                $messages[] = [
+                    'author' => 'admin',
+                    'kind' => 'modification',
+                    'text' => implode(' · ', $modifications),
+                    'at' => $now,
+                    'by' => $current['id'],
+                    'by_name' => $administratorName,
+                ];
+            }
             if ($adminComment !== '') {
                 $messages[] = [
                     'author' => 'admin',
                     'text' => $adminComment,
-                    'at' => date(DATE_ATOM),
+                    'at' => $now,
                     'by' => $current['id'],
-                    'by_name' => trim((string) ($current['first_name'] ?? '') . ' ' . (string) ($current['last_name'] ?? '')) ?: 'Administration',
+                    'by_name' => $administratorName,
                 ];
             }
             $changes['messages'] = $messages;
@@ -122,6 +142,47 @@ final class AdminProposalController
         } catch (InvalidArgumentException|RuntimeException $exception) {
             Response::html(htmlspecialchars($exception->getMessage(), ENT_QUOTES, 'UTF-8'), 422);
         }
+    }
+
+    /**
+     * @param array<string, array{0: mixed, 1: mixed, 2?: array<string, string>}> $fields
+     * @param array<string, mixed> $planting
+     * @return list<string>
+     */
+    private function modifications(string $source, array $previous, array $fields, array $planting): array
+    {
+        $modifications = [];
+        $statusLabels = $fields['status'][2] ?? [];
+        if ((string) $fields['status'][0] !== (string) $fields['status'][1]) {
+            $modifications[] = 'statut changé en « ' . (string) ($statusLabels[$fields['status'][0]] ?? $fields['status'][0]) . ' »';
+        }
+        if ((string) $fields['species'][0] !== (string) $fields['species'][1]) {
+            $modifications[] = 'essence changée en « ' . (string) $fields['species'][0] . ' »';
+        }
+        if ($source !== 'donations') {
+            $labels = static fn(string $key): string => (string) ($planting['objectives'][$key]['label'] ?? $key);
+            foreach (array_diff((array) $fields['objectives'][0], (array) $fields['objectives'][1]) as $added) {
+                $modifications[] = 'objectif « ' . $labels((string) $added) . ' » sélectionné';
+            }
+            foreach (array_diff((array) $fields['objectives'][1], (array) $fields['objectives'][0]) as $removed) {
+                $modifications[] = 'objectif « ' . $labels((string) $removed) . ' » désélectionné';
+            }
+        } else {
+            if ((string) $fields['conditioning'][0] !== (string) $fields['conditioning'][1]) {
+                $modifications[] = 'conditionnement changé en « ' . (string) ($planting['tree_conditioning'][$fields['conditioning'][0]]['label'] ?? $fields['conditioning'][0]) . ' »';
+            }
+            if ((string) $fields['tree_size'][0] !== (string) $fields['tree_size'][1]) {
+                $modifications[] = 'taille changée en « ' . (string) ($planting['tree_sizes'][$fields['tree_size'][0]]['label'] ?? $fields['tree_size'][0]) . ' »';
+            }
+        }
+        $previousCoordinates = [(float) ($fields['coordinates'][1][0] ?? 0), (float) ($fields['coordinates'][1][1] ?? 0)];
+        if ([$previousCoordinates[0], $previousCoordinates[1]] !== [(float) $fields['coordinates'][0][0], (float) $fields['coordinates'][0][1]]) {
+            $modifications[] = 'localisation modifiée';
+        }
+        if ($modifications !== []) {
+            $modifications[0] = mb_strtoupper(mb_substr($modifications[0], 0, 1), 'UTF-8') . mb_substr($modifications[0], 1);
+        }
+        return $modifications;
     }
 
     private function coordinate(mixed $value): float

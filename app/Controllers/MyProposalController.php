@@ -47,9 +47,30 @@ final class MyProposalController
             if (!in_array($species, $planting['allowed_species'], true)) { throw new InvalidArgumentException('Essence invalide.'); }
             $comment = mb_substr(trim((string) $request->input('comment')), 0, 1000);
             $changes = ['species' => $species, 'comment' => $comment, 'updated_at' => date(DATE_ATOM)];
-            if ($comment !== '' && $comment !== (string) ($feature['properties']['comment'] ?? '')) {
-                $messages = array_values(array_filter((array) ($feature['properties']['messages'] ?? []), 'is_array'));
-                $messages[] = ['author' => 'contributeur', 'text' => $comment, 'at' => date(DATE_ATOM)];
+            $previousProperties = (array) ($feature['properties'] ?? []);
+            $modifications = [];
+            if ($species !== (string) ($previousProperties['species'] ?? '')) { $modifications[] = 'essence changée en « ' . $species . ' »'; }
+            if ($source === 'donations') {
+                if ($conditioning !== (string) ($previousProperties['conditioning'] ?? '')) { $modifications[] = 'conditionnement changé en « ' . (string) ($planting['tree_conditioning'][$conditioning]['label'] ?? $conditioning) . ' »'; }
+                if ($treeSize !== (string) ($previousProperties['tree_size'] ?? '')) { $modifications[] = 'taille changée en « ' . (string) ($planting['tree_sizes'][$treeSize]['label'] ?? $treeSize) . ' »'; }
+            } else {
+                $objectiveLabel = static fn(string $key): string => (string) ($planting['objectives'][$key]['label'] ?? $key);
+                $previousObjectives = array_values((array) ($previousProperties['objectives'] ?? []));
+                foreach (array_diff($objectives, $previousObjectives) as $added) { $modifications[] = 'objectif « ' . $objectiveLabel((string) $added) . ' » sélectionné'; }
+                foreach (array_diff($previousObjectives, $objectives) as $removed) { $modifications[] = 'objectif « ' . $objectiveLabel((string) $removed) . ' » désélectionné'; }
+            }
+            if ($modifications !== []) {
+                $modifications[0] = mb_strtoupper(mb_substr($modifications[0], 0, 1), 'UTF-8') . mb_substr($modifications[0], 1);
+            }
+            if ($modifications !== [] || ($comment !== '' && $comment !== (string) ($previousProperties['comment'] ?? ''))) {
+                $messages = array_values(array_filter((array) ($previousProperties['messages'] ?? []), 'is_array'));
+                $now = date(DATE_ATOM);
+                if ($modifications !== []) {
+                    $messages[] = ['author' => 'contributeur', 'kind' => 'modification', 'text' => implode(' · ', $modifications), 'at' => $now];
+                }
+                if ($comment !== '' && $comment !== (string) ($previousProperties['comment'] ?? '')) {
+                    $messages[] = ['author' => 'contributeur', 'text' => $comment, 'at' => $now];
+                }
                 $changes['messages'] = $messages;
             }
             if ($source === 'donations') {
