@@ -87,6 +87,17 @@ return [
     ],
 
     /* ========================================================================
+     * 1 bis. PAGE D'ACCUEL
+     * Description affichée sur la page d'accueil, à droite de la carte.
+     * HTML autorisé (paragraphes, listes, liens) — la carte montre les
+     * propositions, dons et recensements VALIDÉS par la collectivité.
+     * ======================================================================== */
+
+    'home' => [
+        'description_html' => getenv('PLANTONS_HOME_DESCRIPTION') ?: '<p><strong>Plantons +</strong> est la plateforme participative du territoire pour planter, donner et recenser des arbres.</p><p>Chaque habitant peut proposer une plantation, offrir un arbre à la collectivité ou recenser un arbre remarquable existant. Les contributions sont examinées par la collectivité, puis les contenus validés apparaissent sur cette carte.</p><ul><li><a href="' . $basePath . '/?route=%2Fenvie-d-un-arbre">Envie d’un arbre</a> — proposez un emplacement de plantation</li><li><a href="' . $basePath . '/?route=%2Fproposer-un-arbre">Donner un arbre</a> — offrez un arbre en pot ou en pleine terre</li><li><a href="' . $basePath . '/?route=%2Frecenser-un-arbre">Recenser un arbre</a> — faites connaître le patrimoine arboré existant</li></ul><p>Ensemble, plantons plus d’arbres sur notre territoire.</p>',
+    ],
+
+    /* ========================================================================
      * 2. TERRITOIRE  [Territoire]
      * Adapter uniquement cette section pour déployer sur une autre collectivité.
      * Les géométries (limites, secteurs) restent des fichiers de données
