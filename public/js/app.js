@@ -34,6 +34,7 @@
     if (['refusee', 'rejetee'].includes(status)) return { className: `proposal-marker--rejected${cross ? ' proposal-marker--cross' : ''}`, icon: cross ? '+' : '●' };
     if (status === 'validee') return { className: `proposal-marker--validated${cross ? ' proposal-marker--cross' : ''}`, icon: cross ? '+' : '●' };
     if (['arbre_plante', 'realisee'].includes(status)) return { className: `proposal-marker--planted${cross ? ' proposal-marker--cross' : ''}`, icon: cross ? '+' : '🌳' };
+    if (status === 'remarquable') return { className: 'proposal-marker--remarkable', icon: '★' };
     return { className: cross ? 'proposal-marker--cross' : '', icon: cross ? '+' : '●' };
   };
   const proposalIcon = (status) => { const details = markerDetails(status); return L.divIcon({ className: '', html: `<span class="proposal-marker ${details.className}" aria-hidden="true">${details.icon}</span>`, iconSize: [42, 42], iconAnchor: [21, 21] }); };

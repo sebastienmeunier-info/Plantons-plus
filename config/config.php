@@ -202,6 +202,14 @@ return [
             'realisee' => 'Arbre planté',
         ],
     ],
+    'census' => [
+        'status_labels' => [
+            'a_valider' => 'Proposé',
+            'refusee' => 'Refusé',
+            'validee' => 'Validé',
+            'remarquable' => 'Remarquable',
+        ],
+    ],
     'auth' => [
         'users_file' => $root . '/data/utilisateurs.json',
         'password_resets_file' => $root . '/data/reinitialisations.json',

@@ -51,7 +51,7 @@ final class AdminProposalController
                 Response::html('Session expirée.', 403);
             }
             $status = (string) $request->input('status');
-            $statuses = $this->app->config('proposals')['status_labels'];
+            $statuses = $source === 'trees' ? $this->app->config('census')['status_labels'] : $this->app->config('proposals')['status_labels'];
             if ($status === 'supprimer') {
                 if ($current['role'] !== 'super_administrateur') {
                     Response::html('Suppression réservée au super-admin.', 403);
@@ -225,7 +225,8 @@ final class AdminProposalController
                 $planting['tree_sizes'][$properties['tree_size'] ?? '']['label'] ?? '',
             ]))
             : implode(', ', array_map(static fn(string $objective): string => (string) ($planting['objectives'][$objective]['label'] ?? $objective), (array) ($properties['objectives'] ?? [])));
-        $status = (string) ($this->app->config('proposals')['status_labels'][$properties['status'] ?? ''] ?? ($properties['status'] ?? 'Proposée'));
+        $labels = $source === 'trees' ? $this->app->config('census')['status_labels'] : $this->app->config('proposals')['status_labels'];
+        $status = (string) ($labels[$properties['status'] ?? ''] ?? ($properties['status'] ?? 'Proposé'));
         $proposalUrl = $this->app->absoluteRouteUrl('/ma-proposition?source=' . rawurlencode($source) . '&id=' . rawurlencode((string) ($properties['id'] ?? '')));
         $variables = [
             'project_name' => (string) $this->app->config('app')['name'],
