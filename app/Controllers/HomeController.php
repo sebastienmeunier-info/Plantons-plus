@@ -20,6 +20,22 @@ final class HomeController
         $this->renderProposalPage('Envie d\'un arbre', false, 'proposals', $this->app->routeUrl('/api/propositions'));
     }
 
+    public function home(Request $request): never
+    {
+        $auth = new AuthService(new UserRepository($this->app->config('auth')['users_file']), $this->app->config('auth'));
+        $user = $auth->currentUser();
+        Response::html($this->app->view()->render('overview', [
+            'application' => $this->app->config('app'),
+            'territory' => $this->app->config('territory'),
+            'home' => $this->app->config('home'),
+            'map' => $this->app->config('map'),
+            'dataSources' => $this->app->config('data_sources'),
+            'user' => $user,
+            'pageTitle' => 'Accueil',
+            'isOverview' => true,
+        ]));
+    }
+
     public function treeProposal(Request $request): never
     {
         $this->renderProposalPage('Donner un arbre', true, 'donations', $this->app->routeUrl('/api/dons'));

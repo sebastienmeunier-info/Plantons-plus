@@ -16,7 +16,8 @@ use Plantons\Controllers\AboutController;
 use Plantons\Controllers\MyProposalController;
 
 return [
-    ['GET', '/', [HomeController::class, 'index']],
+    ['GET', '/', [HomeController::class, 'home']],
+    ['GET', '/envie-d-un-arbre', [HomeController::class, 'index']],
     ['GET', '/proposer-un-arbre', [HomeController::class, 'treeProposal']],
     ['GET', '/recenser-un-arbre', [HomeController::class, 'treeCensus']],
     ['GET', '/sante', [HomeController::class, 'health']],

@@ -15,7 +15,7 @@ final class GeoJsonController
 
     public function territory(Request $request): never { $this->respond('territory'); }
     public function sectors(Request $request): never { $this->respond('sectors'); }
-    public function trees(Request $request): never { $this->respond('trees'); }
+    public function trees(Request $request): never { $this->respondPublicProposals('trees'); }
     public function proposals(Request $request): never { $this->respondPublicProposals('proposals'); }
     public function donations(Request $request): never { $this->respondPublicProposals('donations'); }
 
