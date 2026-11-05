@@ -23,7 +23,7 @@
   <aside class="map-legend overview-legend" aria-label="Légende des contributions">
     <strong>Légende</strong>
     <span><i class="legend-marker legend-marker--validated" aria-hidden="true">●</i> Plantation validée</span>
-    <span><i class="legend-marker legend-marker--validated" aria-hidden="true">●</i> Don d'arbre validé</span>
+    <span><i class="legend-marker legend-marker--validated legend-marker--square" aria-hidden="true"></i> Don d'arbre validé</span>
     <span><i class="legend-marker legend-marker--planted" aria-hidden="true">🌳</i> Arbre planté</span>
     <span><i class="legend-marker legend-marker--validated legend-marker--triangle" aria-hidden="true"></i> Arbre recensé validé</span>
     <span><i class="legend-marker legend-marker--remarkable legend-marker--triangle" aria-hidden="true"></i> Arbre remarquable</span>
@@ -40,7 +40,7 @@ const overviewConfig = <?= json_encode([
     'territoryUrl' => !empty($dataSources['territory']['file']) ? $routeUrl((string) ($dataSources['territory']['url'] ?? '')) : '',
     'sources' => [
         ['url' => $routeUrl((string) $dataSources['proposals']['url']), 'shape' => 'round', 'statuses' => ['validee', 'arbre_plante', 'realisee']],
-        ['url' => $routeUrl((string) $dataSources['donations']['url']), 'shape' => 'cross', 'statuses' => ['validee', 'arbre_plante', 'realisee']],
+        ['url' => $routeUrl((string) $dataSources['donations']['url']), 'shape' => 'square', 'statuses' => ['validee', 'arbre_plante', 'realisee']],
         ['url' => $routeUrl((string) $dataSources['trees']['url']), 'shape' => 'triangle', 'statuses' => ['validee', 'remarquable']],
     ],
 ], JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT) ?>;
@@ -55,11 +55,11 @@ if (overviewConfig.territoryUrl) {
   }).catch(() => {});
 }
 const overviewIcon = (shape, status) => {
-  const cross = shape === 'cross', triangle = shape === 'triangle';
-  const shapeClass = cross ? ' proposal-marker--cross' : (triangle ? ' proposal-marker--triangle' : '');
-  let statusClass = '', icon = cross ? '+' : (triangle ? '' : '●');
-  if (['arbre_plante', 'realisee'].includes(status)) { statusClass = ' proposal-marker--planted'; icon = cross ? '+' : '🌳'; }
-  else if (status === 'remarquable') { statusClass = ' proposal-marker--remarkable'; icon = cross ? '+' : (triangle ? '' : '★'); }
+  const square = shape === 'square', triangle = shape === 'triangle';
+  const shapeClass = square ? ' proposal-marker--square' : (triangle ? ' proposal-marker--triangle' : '');
+  let statusClass = '', icon = square || triangle ? '' : '●';
+  if (['arbre_plante', 'realisee'].includes(status)) { statusClass = ' proposal-marker--planted'; icon = square || triangle ? '' : '🌳'; }
+  else if (status === 'remarquable') { statusClass = ' proposal-marker--remarkable'; icon = square || triangle ? '' : '★'; }
   else if (status === 'validee') { statusClass = ' proposal-marker--validated'; }
   return L.divIcon({ className: '', html: `<span class="proposal-marker${statusClass}${shapeClass}" aria-hidden="true">${icon}</span>`, iconSize: [42, 42], iconAnchor: [21, 21] });
 };
