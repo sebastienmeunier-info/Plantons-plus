@@ -17,15 +17,20 @@ final class HomeController
 
     public function index(Request $request): never
     {
-        $this->renderProposalPage('Proposer une plantation', false, 'proposals', $this->app->routeUrl('/api/propositions'));
+        $this->renderProposalPage('Envie d\'un arbre', false, 'proposals', $this->app->routeUrl('/api/propositions'));
     }
 
     public function treeProposal(Request $request): never
     {
-        $this->renderProposalPage('Proposer un arbre', true, 'donations', $this->app->routeUrl('/api/dons'));
+        $this->renderProposalPage('Donner un arbre', true, 'donations', $this->app->routeUrl('/api/dons'));
     }
 
-    private function renderProposalPage(string $pageTitle, bool $treeProposal, string $source, string $submissionUrl): never
+    public function treeCensus(Request $request): never
+    {
+        $this->renderProposalPage('Recenser un arbre', false, 'trees', $this->app->routeUrl('/api/arbres'), true);
+    }
+
+    private function renderProposalPage(string $pageTitle, bool $treeProposal, string $source, string $submissionUrl, bool $isCensus = false): never
     {
         $auth = new AuthService(new UserRepository($this->app->config('auth')['users_file']), $this->app->config('auth'));
         $user = $auth->currentUser();
@@ -61,6 +66,7 @@ final class HomeController
             'user' => $user,
             'pageTitle' => $pageTitle,
             'treeProposal' => $treeProposal,
+            'isCensus' => $isCensus,
         ]));
     }
 

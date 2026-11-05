@@ -29,6 +29,11 @@ final class ProposalController
         $this->createForSource($request, 'donations');
     }
 
+    public function createCensus(Request $request): never
+    {
+        $this->createForSource($request, 'trees');
+    }
+
     private function createForSource(Request $request, string $source): never
     {
         try {
@@ -58,7 +63,7 @@ final class ProposalController
                     throw new InvalidArgumentException('Veuillez sélectionner la taille de l’arbre.');
                 }
                 $objectives = [];
-            } else {
+            } elseif ($source === 'proposals') {
                 if ($objectives === [] || array_diff($objectives, array_keys($planting['objectives'])) !== []) {
                     throw new InvalidArgumentException('Veuillez sélectionner au moins un objectif valide.');
                 }
@@ -86,7 +91,7 @@ final class ProposalController
                 'type' => 'Feature',
                 'geometry' => ['type' => 'Point', 'coordinates' => [$longitude, $latitude]],
                 'properties' => [
-                    'id' => 'PA-' . date('Y') . '-' . strtoupper(substr(bin2hex(random_bytes(5)), 0, 8)),
+                    'id' => ($source === 'trees' ? 'AR-' : 'PA-') . date('Y') . '-' . strtoupper(substr(bin2hex(random_bytes(5)), 0, 8)),
                     'status' => 'a_valider',
                     'created_at' => $createdAt,
                     'author' => $author,
