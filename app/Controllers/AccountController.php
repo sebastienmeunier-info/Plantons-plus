@@ -52,10 +52,11 @@ final class AccountController
             }
             unset($feature);
         }
-        $counts = ['proposed' => 0, 'validated' => 0, 'rejected' => 0, 'planted' => 0];
+        $counts = ['proposed' => 0, 'validated' => 0, 'rejected' => 0, 'planted' => 0, 'remarkable' => 0];
         foreach ($displayFeatures as $feature) {
             $status = $feature['properties']['status'] ?? 'a_valider';
-            if ($status === 'validee' || $status === 'remarquable') { $counts['validated']++; }
+            if ($status === 'validee') { $counts['validated']++; }
+            elseif ($status === 'remarquable') { $counts['remarkable']++; }
             elseif (in_array($status, ['arbre_plante', 'realisee'], true)) { $counts['planted']++; }
             elseif (in_array($status, ['refusee', 'rejetee'], true)) { $counts['rejected']++; }
             else { $counts['proposed']++; }
