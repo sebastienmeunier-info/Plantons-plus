@@ -24,14 +24,15 @@ final class AccountController
 
         $isAdministrator = in_array($user['role'], ['administrateur', 'super_administrateur'], true);
         $tab = (string) $request->query('onglet', 'profil');
-        $allowedTabs = $isAdministrator ? ['profil', 'plantations', 'dons', 'utilisateurs', 'exports', 'statistiques'] : ['profil', 'plantations', 'statistiques'];
+        $allowedTabs = $isAdministrator ? ['profil', 'plantations', 'dons', 'recensements', 'pepinieres', 'utilisateurs', 'exports', 'statistiques'] : ['profil', 'plantations', 'statistiques'];
         if (!in_array($tab, $allowedTabs, true)) { $tab = 'profil'; }
 
         $store = new GeoJsonStore();
         $userRepository = new UserRepository($this->app->config('auth')['users_file']);
         $sources = $this->app->config('data_sources');
         $isDonationTab = $tab === 'dons';
-        $allFeatures = $store->read($sources[$isDonationTab ? 'donations' : 'proposals']['file'])['features'];
+        $isCensusTab = $tab === 'recensements';
+        $allFeatures = $store->read($sources[$isDonationTab ? 'donations' : ($isCensusTab ? 'trees' : 'proposals')]['file'])['features'];
         $features = array_values(array_filter($allFeatures, static fn(array $feature): bool => ($feature['properties']['email'] ?? '') === $user['email']));
         $displayFeatures = $isAdministrator ? $allFeatures : $features;
         if ($isAdministrator) {
@@ -73,13 +74,16 @@ final class AccountController
             $allUsers,
             $this->app->config('proposals')['status_labels'],
         );
+        $pepiniereFeatures = $isAdministrator ? $store->read($sources['pepinieres']['file'])['features'] : [];
 
         Response::html($this->app->view()->render('account/index', [
             'application' => $this->app->config('app'), 'csrfToken' => $auth->csrfToken(), 'user' => $user,
             'tab' => $tab, 'isAdministrator' => $isAdministrator, 'counts' => $counts, 'features' => $features,
             'displayFeatures' => $displayFeatures, 'statuses' => $this->app->config('proposals')['status_labels'],
-            'planting' => $this->app->config('planting'), 'isDonationTab' => $isDonationTab,
-            'notice' => $request->query('import') === 'done'
+            'planting' => $this->app->config('planting'), 'isDonationTab' => $isDonationTab, 'isCensusTab' => $isCensusTab, 'geocoding' => $this->app->config('geocoding'),
+            'notice' => $request->query('pepinieres') === 'enregistrees'
+                ? 'Les positions des pépinières ont été enregistrées.'
+                : ($request->query('import') === 'done'
                 ? sprintf('Import terminé : %d utilisateur(s), %d plantation(s), %d don(s), %d photo(s) ajoutés et %d e-mail(s) envoyé(s).', (int) $request->query('users'), (int) $request->query('proposals'), (int) $request->query('donations'), (int) $request->query('photos'), (int) $request->query('emails'))
                 : match ($request->query('approval')) {
                 'sent' => 'L’inscription a été approuvée et le courriel de confirmation a été envoyé.',
@@ -89,8 +93,9 @@ final class AccountController
                     'failed' => 'Le compte est créé, mais l’invitation n’a pas pu être envoyée. Vérifiez la configuration SMTP puis renvoyez l’invitation.',
                     default => null,
                 },
-            },
+            }),
             'users' => $managedUsers,
+            'pepiniereFeatures' => $pepiniereFeatures,
             'registrationStatuses' => $registrationStatuses,
             'statisticsData' => $statistics,
             'primarySuperAdministratorId' => (string) ($userRepository->primarySuperAdministrator()['id'] ?? ''),

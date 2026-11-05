@@ -29,6 +29,11 @@ final class ProposalController
         $this->createForSource($request, 'donations');
     }
 
+    public function createCensus(Request $request): never
+    {
+        $this->createForSource($request, 'trees');
+    }
+
     private function createForSource(Request $request, string $source): never
     {
         try {
@@ -58,7 +63,7 @@ final class ProposalController
                     throw new InvalidArgumentException('Veuillez sélectionner la taille de l’arbre.');
                 }
                 $objectives = [];
-            } else {
+            } elseif ($source === 'proposals') {
                 if ($objectives === [] || array_diff($objectives, array_keys($planting['objectives'])) !== []) {
                     throw new InvalidArgumentException('Veuillez sélectionner au moins un objectif valide.');
                 }
@@ -81,13 +86,14 @@ final class ProposalController
             $sectorsFile = trim((string) ($sources['sectors']['file'] ?? ''));
             $sectors = $sectorsFile === '' ? null : $store->read($sectorsFile);
             $photos = (new PhotoService())->store($request->files('photos'), $this->app->config('security'), $this->app->config('paths')['uploads']);
+            $createdAt = date(DATE_ATOM);
             $feature = [
                 'type' => 'Feature',
                 'geometry' => ['type' => 'Point', 'coordinates' => [$longitude, $latitude]],
                 'properties' => [
-                    'id' => 'PA-' . date('Y') . '-' . strtoupper(substr(bin2hex(random_bytes(5)), 0, 8)),
+                    'id' => ($source === 'trees' ? 'AR-' : 'PA-') . date('Y') . '-' . strtoupper(substr(bin2hex(random_bytes(5)), 0, 8)),
                     'status' => 'a_valider',
-                    'created_at' => date(DATE_ATOM),
+                    'created_at' => $createdAt,
                     'author' => $author,
                     'email' => $email === '' ? null : $email,
                     'notification_consent_at' => $email !== '' && (string) $request->input('notification_consent') === '1' ? date(DATE_ATOM) : null,
@@ -96,6 +102,7 @@ final class ProposalController
                     'conditioning' => $source === 'donations' ? $conditioning : null,
                     'tree_size' => $source === 'donations' ? $treeSize : null,
                     'comment' => $comment,
+                    'messages' => $comment !== '' ? [['author' => 'contributeur', 'text' => $comment, 'at' => $createdAt]] : [],
                     'address' => mb_substr(trim((string) $request->input('address')), 0, 255),
                     'sector' => $sectors === null ? '' : $territoryService->municipality($sectors, $longitude, $latitude),
                     'photos' => $photos,

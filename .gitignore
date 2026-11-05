@@ -11,3 +11,4 @@ uploads/exports/*
 uploads/backups/*
 tools/php/
 tools/*.zip
+!data/pepinieres.geojson

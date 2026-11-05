@@ -50,6 +50,30 @@ final class GeoJsonStore
         }
     }
 
+    /** @param list<array<string,mixed>> $features */
+    public function replaceFeatures(string $file, array $features): void
+    {
+        $directory = dirname($file);
+        if (!is_dir($directory) && !mkdir($directory, 0755, true) && !is_dir($directory)) {
+            throw new RuntimeException('Impossible de créer le répertoire de données.');
+        }
+
+        $handle = fopen($file, 'c+');
+        if ($handle === false || !flock($handle, LOCK_EX)) {
+            throw new RuntimeException('Impossible de verrouiller le fichier de données.');
+        }
+
+        try {
+            $collection = ['type' => 'FeatureCollection', 'features' => array_values($features)];
+            rewind($handle);
+            ftruncate($handle, 0);
+            fwrite($handle, json_encode($collection, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES));
+        } finally {
+            flock($handle, LOCK_UN);
+            fclose($handle);
+        }
+    }
+
     /** @param array<string,mixed> $properties */
     public function updateFeature(string $file, string $id, array $properties, ?array $coordinates = null): void
     {
