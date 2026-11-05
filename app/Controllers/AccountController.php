@@ -79,7 +79,7 @@ final class AccountController
             'application' => $this->app->config('app'), 'csrfToken' => $auth->csrfToken(), 'user' => $user,
             'tab' => $tab, 'isAdministrator' => $isAdministrator, 'counts' => $counts, 'features' => $features,
             'displayFeatures' => $displayFeatures, 'statuses' => $this->app->config('proposals')['status_labels'],
-            'planting' => $this->app->config('planting'), 'isDonationTab' => $isDonationTab,
+            'planting' => $this->app->config('planting'), 'isDonationTab' => $isDonationTab, 'geocoding' => $this->app->config('geocoding'),
             'notice' => $request->query('pepinieres') === 'enregistrees'
                 ? 'Les positions des pépinières ont été enregistrées.'
                 : ($request->query('import') === 'done'

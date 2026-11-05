@@ -38,6 +38,7 @@ final class AdminPepiniereController
             $ids = (array) $request->input('id', []);
             $longitudes = (array) $request->input('longitude', []);
             $latitudes = (array) $request->input('latitude', []);
+            $addresses = (array) $request->input('address', []);
             if (count($ids) !== count($longitudes) || count($ids) !== count($latitudes)) {
                 throw new InvalidArgumentException('Données de pépinières invalides.');
             }
@@ -61,6 +62,7 @@ final class AdminPepiniereController
                     'properties' => [
                         'id' => $id,
                         'label' => 'Pépinière ' . ((int) $slot + 1),
+                        'address' => mb_substr(trim((string) ($addresses[$index] ?? '')), 0, 255),
                         'updated_at' => date(DATE_ATOM),
                         'updated_by' => $administrator['id'],
                     ],
