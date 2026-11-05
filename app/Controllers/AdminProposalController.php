@@ -88,6 +88,17 @@ final class AdminProposalController
             if ($previous === null) {
                 throw new RuntimeException('Proposition introuvable.');
             }
+            $messages = array_values(array_filter((array) ($previous['properties']['messages'] ?? []), 'is_array'));
+            if ($adminComment !== '') {
+                $messages[] = [
+                    'author' => 'admin',
+                    'text' => $adminComment,
+                    'at' => date(DATE_ATOM),
+                    'by' => $current['id'],
+                    'by_name' => trim((string) ($current['first_name'] ?? '') . ' ' . (string) ($current['last_name'] ?? '')) ?: 'Administration',
+                ];
+            }
+            $changes['messages'] = $messages;
             $territoryService = new TerritoryService();
             $territoryFile = trim((string) ($sources['territory']['file'] ?? ''));
             $territory = $territoryFile === '' ? null : $store->read($territoryFile);

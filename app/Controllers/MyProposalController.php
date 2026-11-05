@@ -45,7 +45,13 @@ final class MyProposalController
             $planting = $this->app->config('planting');
             $species = trim((string) $request->input('species'));
             if (!in_array($species, $planting['allowed_species'], true)) { throw new InvalidArgumentException('Essence invalide.'); }
-            $changes = ['species' => $species, 'comment' => mb_substr(trim((string) $request->input('comment')), 0, 1000), 'updated_at' => date(DATE_ATOM)];
+            $comment = mb_substr(trim((string) $request->input('comment')), 0, 1000);
+            $changes = ['species' => $species, 'comment' => $comment, 'updated_at' => date(DATE_ATOM)];
+            if ($comment !== '' && $comment !== (string) ($feature['properties']['comment'] ?? '')) {
+                $messages = array_values(array_filter((array) ($feature['properties']['messages'] ?? []), 'is_array'));
+                $messages[] = ['author' => 'contributeur', 'text' => $comment, 'at' => date(DATE_ATOM)];
+                $changes['messages'] = $messages;
+            }
             if ($source === 'donations') {
                 $conditioning = (string) $request->input('conditioning');
                 $treeSize = (string) $request->input('tree_size');
