@@ -137,7 +137,7 @@ final class AdminProposalController
             $updated['properties'] = array_replace((array) ($previous['properties'] ?? []), $updateProperties);
             $updated['geometry'] = ['type' => 'Point', 'coordinates' => [$longitude, $latitude]];
             $this->notifyAdministrativeAction($updated, $source, 'proposal_administrative_update', $current, $adminComment);
-            header('Location: ' . $this->app->routeUrl('/mon-compte?onglet=' . $tab), true, 303);
+            header('Location: ' . $this->app->routeUrl('/mon-compte?onglet=' . $tab . '&proposition=' . rawurlencode($proposalId)), true, 303);
             exit;
         } catch (InvalidArgumentException|RuntimeException $exception) {
             Response::html(htmlspecialchars($exception->getMessage(), ENT_QUOTES, 'UTF-8'), 422);
