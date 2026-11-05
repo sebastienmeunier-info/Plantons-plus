@@ -31,6 +31,7 @@ final class HomeController
             'map' => $this->app->config('map'),
             'dataSources' => $this->app->config('data_sources'),
             'user' => $user,
+            'csrfToken' => $auth->csrfToken(),
             'pageTitle' => 'Accueil',
             'isOverview' => true,
         ]));
