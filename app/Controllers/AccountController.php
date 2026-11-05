@@ -52,10 +52,11 @@ final class AccountController
             }
             unset($feature);
         }
-        $counts = ['proposed' => 0, 'validated' => 0, 'rejected' => 0, 'planted' => 0];
+        $counts = ['proposed' => 0, 'validated' => 0, 'rejected' => 0, 'planted' => 0, 'remarkable' => 0];
         foreach ($displayFeatures as $feature) {
             $status = $feature['properties']['status'] ?? 'a_valider';
             if ($status === 'validee') { $counts['validated']++; }
+            elseif ($status === 'remarquable') { $counts['remarkable']++; }
             elseif (in_array($status, ['arbre_plante', 'realisee'], true)) { $counts['planted']++; }
             elseif (in_array($status, ['refusee', 'rejetee'], true)) { $counts['rejected']++; }
             else { $counts['proposed']++; }
@@ -79,7 +80,7 @@ final class AccountController
         Response::html($this->app->view()->render('account/index', [
             'application' => $this->app->config('app'), 'csrfToken' => $auth->csrfToken(), 'user' => $user,
             'tab' => $tab, 'isAdministrator' => $isAdministrator, 'counts' => $counts, 'features' => $features,
-            'displayFeatures' => $displayFeatures, 'statuses' => $this->app->config('proposals')['status_labels'],
+            'displayFeatures' => $displayFeatures, 'statuses' => $isCensusTab ? $this->app->config('census')['status_labels'] : $this->app->config('proposals')['status_labels'],
             'planting' => $this->app->config('planting'), 'isDonationTab' => $isDonationTab, 'isCensusTab' => $isCensusTab, 'geocoding' => $this->app->config('geocoding'),
             'notice' => $request->query('pepinieres') === 'enregistrees'
                 ? 'Les positions des pépinières ont été enregistrées.'
