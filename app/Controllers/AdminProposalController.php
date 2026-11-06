@@ -253,7 +253,7 @@ final class AdminProposalController
         $notifier->send($event, $recipient, $variables);
     }
 
-    private function requireFeature(string $feature): never
+    private function requireFeature(string $feature): void
     {
         if (($this->app->config('app')['features'][$feature] ?? true) !== true) {
             Response::html('Cette fonctionnalité est désactivée.', 404);
