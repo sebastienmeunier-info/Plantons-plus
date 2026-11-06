@@ -21,16 +21,19 @@ final class ProposalController
 
     public function create(Request $request): never
     {
+        $this->requireFeature('proposals');
         $this->createForSource($request, 'proposals');
     }
 
     public function createDonation(Request $request): never
     {
+        $this->requireFeature('donations');
         $this->createForSource($request, 'donations');
     }
 
     public function createCensus(Request $request): never
     {
+        $this->requireFeature('trees');
         $this->createForSource($request, 'trees');
     }
 
@@ -115,6 +118,13 @@ final class ProposalController
         } catch (RuntimeException $exception) {
             $this->app->logger()->error($exception->getMessage());
             Response::json(['message' => $exception->getMessage()], 500);
+        }
+    }
+
+    private function requireFeature(string $feature): never
+    {
+        if (($this->app->config('app')['features'][$feature] ?? true) !== true) {
+            Response::json(['message' => 'Cette fonctionnalité est désactivée.'], 404);
         }
     }
 

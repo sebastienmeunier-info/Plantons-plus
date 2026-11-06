@@ -84,6 +84,18 @@ return [
         'routing_mode' => getenv('PLANTONS_ROUTING_MODE') ?: 'query',
         'timezone' => getenv('PLANTONS_TIMEZONE') ?: 'Europe/Paris',
         'version' => trim((string) file_get_contents($root . '/VERSION')),
+        /*
+         * Activation des différentes parties de l'application. Une partie
+         * désactivée disparaît du menu, sa page devient inaccessible, ses
+         * onglets d'administration sont masqués et ses éléments ne
+         * s'affichent plus sur la carte de la page d'accueil.
+         */
+        'features' => [
+            'proposals' => true,   // « Envie d'un arbre » (propositions de plantation)
+            'donations' => true,   // « Donner un arbre » (dons d'arbres)
+            'trees' => true,       // « Recenser un arbre » (recensements)
+            'pepinieres' => true,  // Pépinières (onglet d'administration)
+        ],
     ],
 
     /* ========================================================================

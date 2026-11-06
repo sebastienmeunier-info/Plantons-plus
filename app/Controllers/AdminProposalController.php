@@ -29,16 +29,19 @@ final class AdminProposalController
 
     public function update(Request $request): never
     {
+        $this->requireFeature('proposals');
         $this->updateForSource($request, 'proposals', 'plantations');
     }
 
     public function updateDonation(Request $request): never
     {
+        $this->requireFeature('donations');
         $this->updateForSource($request, 'donations', 'dons');
     }
 
     public function updateCensus(Request $request): never
     {
+        $this->requireFeature('trees');
         $this->updateForSource($request, 'trees', 'recensements');
     }
 
@@ -248,6 +251,13 @@ final class AdminProposalController
         ];
         $notifier = new NotificationService($this->app->config('smtp'), $notifications, $this->app->logger());
         $notifier->send($event, $recipient, $variables);
+    }
+
+    private function requireFeature(string $feature): never
+    {
+        if (($this->app->config('app')['features'][$feature] ?? true) !== true) {
+            Response::html('Cette fonctionnalité est désactivée.', 404);
+        }
     }
 
     private function guard(AuthService $auth): array
