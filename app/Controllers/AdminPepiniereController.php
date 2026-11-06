@@ -81,7 +81,7 @@ final class AdminPepiniereController
         }
     }
 
-    private function requireFeature(): never
+    private function requireFeature(): void
     {
         if (($this->app->config('app')['features']['pepinieres'] ?? true) !== true) {
             Response::html('Cette fonctionnalité est désactivée.', 404);

@@ -121,7 +121,7 @@ final class ProposalController
         }
     }
 
-    private function requireFeature(string $feature): never
+    private function requireFeature(string $feature): void
     {
         if (($this->app->config('app')['features'][$feature] ?? true) !== true) {
             Response::json(['message' => 'Cette fonctionnalité est désactivée.'], 404);
