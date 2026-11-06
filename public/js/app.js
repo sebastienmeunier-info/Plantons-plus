@@ -40,7 +40,8 @@
     if (status === 'remarquable') return { className: `proposal-marker--remarkable${shapeClass}`, icon: square || triangle ? '' : '★' };
     return { className: shapeClass.trim(), icon };
   };
-  const proposalIcon = (status) => { const details = markerDetails(status); return L.divIcon({ className: '', html: `<span class="proposal-marker ${details.className}" aria-hidden="true">${details.icon}</span>`, iconSize: [42, 42], iconAnchor: [21, 21] }); };
+  const markerWidth = Number(config.markerWidth || 1), markerHeight = Number(config.markerHeight || 1);
+  const proposalIcon = (status) => { const details = markerDetails(status); return L.divIcon({ className: '', html: `<span class="proposal-marker ${details.className}" aria-hidden="true">${details.icon}</span>`, iconSize: [42 * markerWidth, 42 * markerHeight], iconAnchor: [21 * markerWidth, 21 * markerHeight] }); };
   const renderProposal = (feature) => L.geoJSON(feature, { pointToLayer: (item, latLng) => L.marker(latLng, { icon: proposalIcon(item.properties?.status) }), onEachFeature: (item, layer) => { const properties = item.properties || {}; const details = properties.conditioning ? [config.conditionings?.[properties.conditioning]?.label || properties.conditioning, properties.tree_size ? (config.treeSizes?.[properties.tree_size]?.label || properties.tree_size) : ''].filter(Boolean).join(' · ') : (properties.objectives || []).map((objective) => config.objectives[objective]?.label || objective).join(', '); layer.bindPopup(`<strong>${properties.species || 'Proposition'}</strong><br>${details || 'Information non renseignée'}`); } }).addTo(map);
   const sectorAt = (longitude, latitude) => sectors?.features?.find((feature) => window.turf && turf.booleanPointInPolygon(turf.point([longitude, latitude]), feature))?.properties?.nom || '';
   const shortAddress = (place) => {
