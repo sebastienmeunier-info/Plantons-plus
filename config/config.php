@@ -75,6 +75,8 @@ return [
         // pages (à droite du bloc titre + sous-titre). Laisser vide pour ne
         // pas l'afficher. La hauteur du logo suit celle du bloc titre +
         // sous-titre.
+        // Exemple avec une URL complète :
+        // 'collectivity_logo_url' => 'https://apps.sebastienmeunier.info/plantons/public/logo-collectivite.svg',
         'collectivity_logo_url' => getenv('PLANTONS_COLLECTIVITY_LOGO_URL') ?: '',
         // 'development' ou 'production' (via PLANTONS_ENV).
         'environment' => $environment,
