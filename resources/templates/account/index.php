@@ -3,7 +3,7 @@
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"><link rel="stylesheet" href="<?= htmlspecialchars($url('/public/css/app.css'), ENT_QUOTES, 'UTF-8') ?>"><style>:root { --marker-scale-width: <?= (float) $map['marker_width_coefficient'] ?>; --marker-scale-height: <?= (float) $map['marker_height_coefficient'] ?>; }</style>
 <title>Admin · <?= htmlspecialchars($application['name']) ?></title><body class="outdoor-mode">
 <?php require __DIR__ . '/../partials/header.php'; ?>
-<main class="auth-page account-page">
+<main class="auth-page account-page"><?php $collectivityLogoVariant = 'corner'; require __DIR__ . '/../partials/collectivity-logo.php'; ?>
   <nav class="account-tabs" aria-label="Sections de l’administration">
     <a class="<?= $tab === 'profil' ? 'active' : '' ?>" href="<?= htmlspecialchars($routeUrl('/mon-compte?onglet=profil'), ENT_QUOTES, 'UTF-8') ?>">Mon profil</a>
     <?php if ($application['features']['proposals'] ?? true): ?><a class="<?= $tab === 'plantations' ? 'active' : '' ?>" href="<?= htmlspecialchars($routeUrl('/mon-compte?onglet=plantations'), ENT_QUOTES, 'UTF-8') ?>">Plantations</a><?php endif; ?>
