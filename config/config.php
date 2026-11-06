@@ -126,6 +126,10 @@ return [
         // Bornes de zoom autorisées.
         'min_zoom' => 10,
         'max_zoom' => 20,
+        // Coefficient multiplicateur appliqué à la largeur et à la hauteur des
+        // icônes de repères sur les cartes (1 = taille de référence, 0,5 = moitié).
+        'marker_width_coefficient' => (float) (getenv('PLANTONS_MARKER_WIDTH_COEFFICIENT') ?: 0.5),
+        'marker_height_coefficient' => (float) (getenv('PLANTONS_MARKER_HEIGHT_COEFFICIENT') ?: 0.5),
     ],
 
     /* ========================================================================

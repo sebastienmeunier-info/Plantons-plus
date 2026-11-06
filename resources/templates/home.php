@@ -7,6 +7,7 @@
     <title><?= htmlspecialchars($application['name'], ENT_QUOTES, 'UTF-8') ?></title>
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
     <link rel="stylesheet" href="<?= htmlspecialchars($url('/public/css/app.css'), ENT_QUOTES, 'UTF-8') ?>">
+    <style>:root { --marker-scale-width: <?= (float) $map['marker_width_coefficient'] ?>; --marker-scale-height: <?= (float) $map['marker_height_coefficient'] ?>; }</style>
 </head>
 <body class="outdoor-mode">
 <?php require __DIR__ . '/partials/header.php'; ?>
@@ -43,7 +44,7 @@
 </main>
 <?php require __DIR__ . '/partials/footer.php'; ?>
 <div id="toast" class="toast" role="status" aria-live="polite" hidden></div>
-<script>window.PlantonsConfig = <?= json_encode(['center' => $territory['center'], 'zoom' => $map['default_zoom'], 'territoryUrl' => !empty($dataSources['territory']['file']) ? $routeUrl((string) ($dataSources['territory']['url'] ?? '')) : '', 'sectorsUrl' => !empty($dataSources['sectors']['file']) ? $routeUrl((string) ($dataSources['sectors']['url'] ?? '')) : '', 'sectorType' => $territory['type_secteur'], 'proposalsUrl' => $routeUrl($activeDataSource['url']), 'proposalUrl' => $submissionUrl, 'geocodingSearchUrl' => $geocoding['search_url'], 'geocodingReverseUrl' => $geocoding['reverse_url'], 'markerShape' => $treeProposal ? 'square' : ($isCensus ? 'triangle' : 'round'), 'treeProposal' => $treeProposal, 'isCensus' => $isCensus, 'targetCount' => (int) $planting['target_count'], 'maxPhotos' => $security['max_photos_per_proposal'], 'maxObjectives' => $planting['max_objectives_per_proposal'], 'objectives' => $planting['objectives'], 'conditionings' => $planting['tree_conditioning'], 'treeSizes' => $planting['tree_sizes']], JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT) ?>;</script>
+<script>window.PlantonsConfig = <?= json_encode(['center' => $territory['center'], 'zoom' => $map['default_zoom'], 'territoryUrl' => !empty($dataSources['territory']['file']) ? $routeUrl((string) ($dataSources['territory']['url'] ?? '')) : '', 'sectorsUrl' => !empty($dataSources['sectors']['file']) ? $routeUrl((string) ($dataSources['sectors']['url'] ?? '')) : '', 'sectorType' => $territory['type_secteur'], 'proposalsUrl' => $routeUrl($activeDataSource['url']), 'proposalUrl' => $submissionUrl, 'geocodingSearchUrl' => $geocoding['search_url'], 'geocodingReverseUrl' => $geocoding['reverse_url'], 'markerShape' => $treeProposal ? 'square' : ($isCensus ? 'triangle' : 'round'), 'treeProposal' => $treeProposal, 'isCensus' => $isCensus, 'targetCount' => (int) $planting['target_count'], 'maxPhotos' => $security['max_photos_per_proposal'], 'maxObjectives' => $planting['max_objectives_per_proposal'], 'markerWidth' => (float) $map['marker_width_coefficient'], 'markerHeight' => (float) $map['marker_height_coefficient'], 'objectives' => $planting['objectives'], 'conditionings' => $planting['tree_conditioning'], 'treeSizes' => $planting['tree_sizes']], JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT) ?>;</script>
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@turf/turf@7/turf.min.js"></script>
 <script src="<?= htmlspecialchars($url('/public/js/app.js'), ENT_QUOTES, 'UTF-8') ?>" defer></script>

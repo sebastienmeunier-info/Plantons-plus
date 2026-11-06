@@ -12,3 +12,5 @@ uploads/backups/*
 tools/php/
 tools/*.zip
 !data/pepinieres.geojson
+data/sessions/*
+!data/sessions/.gitkeep
