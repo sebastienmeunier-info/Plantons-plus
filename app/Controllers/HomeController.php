@@ -108,6 +108,7 @@ final class HomeController
             'pageTitle' => $pageTitle,
             'treeProposal' => $treeProposal,
             'isCensus' => $isCensus,
+            'isProposalPage' => !$treeProposal && !$isCensus,
         ]));
     }
 

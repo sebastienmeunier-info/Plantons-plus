@@ -9,7 +9,7 @@ $headerLabel = $headerText !== '' ? $headerText : $defaultHeaderText;
   <nav id="site-navigation" class="site-navigation" aria-label="Navigation principale">
     <?php if ($user ?? null): ?>
       <span class="user-menu">Bonjour <?= htmlspecialchars($user['first_name'], ENT_QUOTES, 'UTF-8') ?></span>
-      <?php if ($application['features']['proposals'] ?? true): ?><a class="menu-button menu-proposal<?= (!($treeProposal ?? false) && !($isCensus ?? false) && !($isOverview ?? false)) ? ' menu-current' : '' ?>" href="<?= htmlspecialchars($routeUrl('/envie-d-un-arbre'), ENT_QUOTES, 'UTF-8') ?>">Envie d'un arbre</a><?php endif; ?>
+      <?php if ($application['features']['proposals'] ?? true): ?><a class="menu-button menu-proposal<?= ($isProposalPage ?? false) ? ' menu-current' : '' ?>" href="<?= htmlspecialchars($routeUrl('/envie-d-un-arbre'), ENT_QUOTES, 'UTF-8') ?>">Envie d'un arbre</a><?php endif; ?>
       <?php if ($application['features']['donations'] ?? true): ?><a class="menu-button menu-proposal<?= ($treeProposal ?? false) ? ' menu-current' : '' ?>" href="<?= htmlspecialchars($routeUrl('/proposer-un-arbre'), ENT_QUOTES, 'UTF-8') ?>">Donner un arbre</a><?php endif; ?>
       <?php if ($application['features']['trees'] ?? true): ?><a class="menu-button menu-proposal<?= ($isCensus ?? false) ? ' menu-current' : '' ?>" href="<?= htmlspecialchars($routeUrl('/recenser-un-arbre'), ENT_QUOTES, 'UTF-8') ?>">Recenser un arbre</a><?php endif; ?>
       <a class="menu-button" href="<?= htmlspecialchars($routeUrl('/a-propos'), ENT_QUOTES, 'UTF-8') ?>">À propos</a>
@@ -17,7 +17,7 @@ $headerLabel = $headerText !== '' ? $headerText : $defaultHeaderText;
       <a class="menu-button" href="<?= htmlspecialchars($routeUrl('/donnees-personnelles'), ENT_QUOTES, 'UTF-8') ?>">Infos RGPD</a>
       <form class="logout-form" method="post" action="<?= htmlspecialchars($routeUrl('/deconnexion'), ENT_QUOTES, 'UTF-8') ?>"><input type="hidden" name="csrf_token" value="<?= htmlspecialchars($csrfToken ?? '', ENT_QUOTES, 'UTF-8') ?>"><button class="menu-button menu-logout">Déconnexion</button></form>
     <?php else: ?>
-      <?php if ($application['features']['proposals'] ?? true): ?><a class="menu-button menu-proposal<?= (!($treeProposal ?? false) && !($isCensus ?? false) && !($isOverview ?? false)) ? ' menu-current' : '' ?>" href="<?= htmlspecialchars($routeUrl('/envie-d-un-arbre'), ENT_QUOTES, 'UTF-8') ?>">Envie d'un arbre</a><?php endif; ?>
+      <?php if ($application['features']['proposals'] ?? true): ?><a class="menu-button menu-proposal<?= ($isProposalPage ?? false) ? ' menu-current' : '' ?>" href="<?= htmlspecialchars($routeUrl('/envie-d-un-arbre'), ENT_QUOTES, 'UTF-8') ?>">Envie d'un arbre</a><?php endif; ?>
       <?php if ($application['features']['donations'] ?? true): ?><a class="menu-button menu-proposal<?= ($treeProposal ?? false) ? ' menu-current' : '' ?>" href="<?= htmlspecialchars($routeUrl('/proposer-un-arbre'), ENT_QUOTES, 'UTF-8') ?>">Donner un arbre</a><?php endif; ?>
       <?php if ($application['features']['trees'] ?? true): ?><a class="menu-button menu-proposal<?= ($isCensus ?? false) ? ' menu-current' : '' ?>" href="<?= htmlspecialchars($routeUrl('/recenser-un-arbre'), ENT_QUOTES, 'UTF-8') ?>">Recenser un arbre</a><?php endif; ?>
       <a class="menu-button" href="<?= htmlspecialchars($routeUrl('/a-propos'), ENT_QUOTES, 'UTF-8') ?>">À propos</a>
