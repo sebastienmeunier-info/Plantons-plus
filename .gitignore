@@ -14,3 +14,5 @@ tools/*.zip
 !data/pepinieres.geojson
 data/sessions/*
 !data/sessions/.gitkeep
+__pycache__/
+*.pyc
