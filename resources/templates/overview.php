@@ -94,6 +94,7 @@ document.querySelectorAll('.legend-tile[data-layer]').forEach((tile) => {
     else { overviewMap.addLayer(layer); tile.classList.remove('is-off'); tile.setAttribute('aria-pressed', 'true'); }
   });
 });
+window.PlantonsMapLayerControl?.add(overviewMap);
 document.querySelector('#overview-locate')?.addEventListener('click', () => {
   if (!navigator.geolocation) return;
   navigator.geolocation.getCurrentPosition(
