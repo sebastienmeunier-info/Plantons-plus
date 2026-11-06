@@ -23,7 +23,6 @@
     </aside>
   </div>
   <aside class="map-legend overview-legend" aria-label="Légende des contributions">
-    <strong>Légende</strong>
     <div class="legend-tiles">
       <?php if ($features['proposals'] ?? true): ?><button type="button" class="legend-tile" data-layer="plantations"><i class="legend-marker legend-marker--validated" aria-hidden="true">●</i> Plantation validée</button><?php endif; ?>
       <?php if ($features['donations'] ?? true): ?><button type="button" class="legend-tile" data-layer="dons"><i class="legend-marker legend-marker--validated legend-marker--square" aria-hidden="true"></i> Don d'arbre validé</button><?php endif; ?>
