@@ -17,6 +17,7 @@ final class HomeController
 
     public function index(Request $request): never
     {
+        $this->requireFeature('proposals');
         $this->renderProposalPage('Envie d\'un arbre', false, 'proposals', $this->app->routeUrl('/api/propositions'));
     }
 
@@ -24,12 +25,25 @@ final class HomeController
     {
         $auth = new AuthService(new UserRepository($this->app->config('auth')['users_file']), $this->app->config('auth'));
         $user = $auth->currentUser();
+        $features = $this->app->config('app')['features'];
+        $sources = [];
+        if ($features['proposals'] ?? true) {
+            $sources[] = ['url' => $this->app->routeUrl('/api/data/propositions'), 'shape' => 'round', 'statuses' => ['validee', 'arbre_plante', 'realisee']];
+        }
+        if ($features['donations'] ?? true) {
+            $sources[] = ['url' => $this->app->routeUrl('/api/data/dons'), 'shape' => 'square', 'statuses' => ['validee', 'arbre_plante', 'realisee']];
+        }
+        if ($features['trees'] ?? true) {
+            $sources[] = ['url' => $this->app->routeUrl('/api/data/arbres'), 'shape' => 'triangle', 'statuses' => ['validee', 'remarquable']];
+        }
         Response::html($this->app->view()->render('overview', [
             'application' => $this->app->config('app'),
             'territory' => $this->app->config('territory'),
             'home' => $this->app->config('home'),
             'map' => $this->app->config('map'),
             'dataSources' => $this->app->config('data_sources'),
+            'features' => $features,
+            'overviewSources' => $sources,
             'user' => $user,
             'csrfToken' => $auth->csrfToken(),
             'pageTitle' => 'Accueil',
@@ -37,13 +51,23 @@ final class HomeController
         ]));
     }
 
+    private function requireFeature(string $feature): void
+    {
+        if (($this->app->config('app')['features'][$feature] ?? true) !== true) {
+            header('Location: ' . $this->app->routeUrl('/'), true, 303);
+            exit;
+        }
+    }
+
     public function treeProposal(Request $request): never
     {
+        $this->requireFeature('donations');
         $this->renderProposalPage('Donner un arbre', true, 'donations', $this->app->routeUrl('/api/dons'));
     }
 
     public function treeCensus(Request $request): never
     {
+        $this->requireFeature('trees');
         $this->renderProposalPage('Recenser un arbre', false, 'trees', $this->app->routeUrl('/api/arbres'), true);
     }
 

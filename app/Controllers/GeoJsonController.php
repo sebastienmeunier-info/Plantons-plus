@@ -19,6 +19,11 @@ final class GeoJsonController
     public function proposals(Request $request): never { $this->respondPublicProposals('proposals'); }
     public function donations(Request $request): never { $this->respondPublicProposals('donations'); }
 
+    private function featureEnabled(string $feature): bool
+    {
+        return ($this->app->config('app')['features'][$feature] ?? true) === true;
+    }
+
     private function respond(string $source): never
     {
         $config = (array) ($this->app->config('data_sources')[$source] ?? []);
@@ -32,6 +37,9 @@ final class GeoJsonController
      */
     private function respondPublicProposals(string $source): never
     {
+        if (!$this->featureEnabled($source)) {
+            Response::json(['type' => 'FeatureCollection', 'features' => []]);
+        }
         $config = $this->app->config('data_sources')[$source];
         $privacy = $this->app->config('privacy');
         $precision = max(0, min(6, (int) ($privacy['public_coordinate_precision'] ?? 4)));

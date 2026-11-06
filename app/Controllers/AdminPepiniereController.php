@@ -21,6 +21,7 @@ final class AdminPepiniereController
 
     public function index(Request $request): never
     {
+        $this->requireFeature();
         $auth = $this->auth();
         $this->guard($auth);
         header('Location: ' . $this->app->routeUrl('/mon-compte?onglet=pepinieres'), true, 303);
@@ -29,6 +30,7 @@ final class AdminPepiniereController
 
     public function update(Request $request): never
     {
+        $this->requireFeature();
         try {
             $auth = $this->auth();
             $administrator = $this->guard($auth);
@@ -76,6 +78,13 @@ final class AdminPepiniereController
             exit;
         } catch (InvalidArgumentException|RuntimeException $exception) {
             Response::html(htmlspecialchars($exception->getMessage(), ENT_QUOTES, 'UTF-8'), 422);
+        }
+    }
+
+    private function requireFeature(): never
+    {
+        if (($this->app->config('app')['features']['pepinieres'] ?? true) !== true) {
+            Response::html('Cette fonctionnalité est désactivée.', 404);
         }
     }
 

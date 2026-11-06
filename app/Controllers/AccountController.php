@@ -24,7 +24,12 @@ final class AccountController
 
         $isAdministrator = in_array($user['role'], ['administrateur', 'super_administrateur'], true);
         $tab = (string) $request->query('onglet', 'profil');
+        $features = $this->app->config('app')['features'];
+        $featureTabs = ['plantations' => 'proposals', 'dons' => 'donations', 'recensements' => 'trees', 'pepinieres' => 'pepinieres'];
         $allowedTabs = $isAdministrator ? ['profil', 'plantations', 'dons', 'recensements', 'pepinieres', 'utilisateurs', 'exports', 'statistiques'] : ['profil', 'plantations', 'statistiques'];
+        $allowedTabs = array_values(array_filter($allowedTabs, static function (string $allowedTab) use ($featureTabs, $features): bool {
+            return !isset($featureTabs[$allowedTab]) || ($features[$featureTabs[$allowedTab]] ?? true) === true;
+        }));
         if (!in_array($tab, $allowedTabs, true)) { $tab = 'profil'; }
 
         $store = new GeoJsonStore();

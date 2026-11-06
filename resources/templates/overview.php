@@ -25,11 +25,11 @@
   <aside class="map-legend overview-legend" aria-label="Légende des contributions">
     <strong>Légende</strong>
     <div class="legend-tiles">
-      <button type="button" class="legend-tile" data-layer="plantations"><i class="legend-marker legend-marker--validated" aria-hidden="true">●</i> Plantation validée</button>
-      <button type="button" class="legend-tile" data-layer="dons"><i class="legend-marker legend-marker--validated legend-marker--square" aria-hidden="true"></i> Don d'arbre validé</button>
-      <button type="button" class="legend-tile" data-layer="planted"><i class="legend-marker legend-marker--planted" aria-hidden="true">🌳</i> Arbre planté</button>
-      <button type="button" class="legend-tile" data-layer="recensements"><i class="legend-marker legend-marker--validated legend-marker--triangle" aria-hidden="true"></i> Arbre recensé validé</button>
-      <button type="button" class="legend-tile" data-layer="remarquables"><i class="legend-marker legend-marker--remarkable legend-marker--triangle" aria-hidden="true"></i> Arbre remarquable</button>
+      <?php if ($features['proposals'] ?? true): ?><button type="button" class="legend-tile" data-layer="plantations"><i class="legend-marker legend-marker--validated" aria-hidden="true">●</i> Plantation validée</button><?php endif; ?>
+      <?php if ($features['donations'] ?? true): ?><button type="button" class="legend-tile" data-layer="dons"><i class="legend-marker legend-marker--validated legend-marker--square" aria-hidden="true"></i> Don d'arbre validé</button><?php endif; ?>
+      <?php if (($features['proposals'] ?? true) || ($features['donations'] ?? true)): ?><button type="button" class="legend-tile" data-layer="planted"><i class="legend-marker legend-marker--planted" aria-hidden="true">🌳</i> Arbre planté</button><?php endif; ?>
+      <?php if ($features['trees'] ?? true): ?><button type="button" class="legend-tile" data-layer="recensements"><i class="legend-marker legend-marker--validated legend-marker--triangle" aria-hidden="true"></i> Arbre recensé validé</button><?php endif; ?>
+      <?php if ($features['trees'] ?? true): ?><button type="button" class="legend-tile" data-layer="remarquables"><i class="legend-marker legend-marker--remarkable legend-marker--triangle" aria-hidden="true"></i> Arbre remarquable</button><?php endif; ?>
     </div>
   </aside>
 </main>
@@ -42,11 +42,7 @@ const overviewConfig = <?= json_encode([
     'minZoom' => $map['min_zoom'],
     'maxZoom' => $map['max_zoom'],
     'territoryUrl' => !empty($dataSources['territory']['file']) ? $routeUrl((string) ($dataSources['territory']['url'] ?? '')) : '',
-    'sources' => [
-        ['url' => $routeUrl((string) $dataSources['proposals']['url']), 'shape' => 'round', 'statuses' => ['validee', 'arbre_plante', 'realisee']],
-        ['url' => $routeUrl((string) $dataSources['donations']['url']), 'shape' => 'square', 'statuses' => ['validee', 'arbre_plante', 'realisee']],
-        ['url' => $routeUrl((string) $dataSources['trees']['url']), 'shape' => 'triangle', 'statuses' => ['validee', 'remarquable']],
-    ],
+    'sources' => $overviewSources,
 ], JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT) ?>;
 const overviewMap = L.map('overview-map').setView(overviewConfig.center, overviewConfig.zoom);
 overviewMap.setMinZoom(overviewConfig.minZoom).setMaxZoom(overviewConfig.maxZoom);
