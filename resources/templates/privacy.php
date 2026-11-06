@@ -2,7 +2,7 @@
 <html lang="fr">
 <head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><link rel="stylesheet" href="<?= htmlspecialchars($url('/public/css/app.css'), ENT_QUOTES, 'UTF-8') ?>"><title>Données personnelles · <?= htmlspecialchars($application['name'], ENT_QUOTES, 'UTF-8') ?></title></head>
 <body class="outdoor-mode"><?php require __DIR__ . '/partials/header.php'; ?>
-<main class="auth-page privacy-page">
+<main class="auth-page privacy-page"><?php $collectivityLogoVariant = 'corner'; require __DIR__ . '/partials/collectivity-logo.php'; ?>
   <h1>Données personnelles</h1>
   <p><strong>Responsable du traitement :</strong> <?= htmlspecialchars($privacy['controller_name'], ENT_QUOTES, 'UTF-8') ?>.</p>
   <p><strong>Contact :</strong> <a href="mailto:<?= htmlspecialchars($privacy['contact_email'], ENT_QUOTES, 'UTF-8') ?>"><?= htmlspecialchars($privacy['contact_email'], ENT_QUOTES, 'UTF-8') ?></a><?php if ($privacy['dpo_email'] !== ''): ?> · <strong>DPO :</strong> <a href="mailto:<?= htmlspecialchars($privacy['dpo_email'], ENT_QUOTES, 'UTF-8') ?>"><?= htmlspecialchars($privacy['dpo_email'], ENT_QUOTES, 'UTF-8') ?></a><?php endif; ?>.</p>

@@ -5,7 +5,9 @@ button, input, select, textarea { font: inherit; }
 button { cursor: pointer; }
 .site-header { position: sticky; z-index: 2000; top: 0; display: flex; justify-content: space-between; align-items: center; gap: 1rem; padding: .7rem 1rem; color: #fff; background: var(--green-dark); border-bottom: 1px solid #4f6e59; }.project-brand { display: flex; align-items: center; gap: .65rem; min-width: 0; color: #fff; text-decoration: none; }.project-brand strong { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }.project-title-plus { color: #ff8a1f; }.project-logo { height: 2.35rem; }.menu-button { min-height: 2.4rem; padding: .4rem .65rem; color: #fff; background: transparent; border: 1px solid #718578; }.menu-button:hover, .menu-button:focus-visible { color: #07150b; background: #72dc8f; }
 .page-layout { max-width: 72rem; margin: auto; padding: 1rem 1rem 6rem; display: grid; gap: 1rem; }
-.intro h1 { margin: 0 0 .25rem; color: #fff; font-size: clamp(1.7rem, 7vw, 2.4rem); }.intro p { margin: 0; color: var(--muted); }
+.intro { display: flex; justify-content: space-between; align-items: stretch; gap: 1rem; }.intro-text { min-width: 0; }.intro h1 { margin: 0 0 .25rem; color: #fff; font-size: clamp(1.7rem, 7vw, 2.4rem); }.intro p { margin: 0; color: var(--muted); }
+.collectivity-logo { align-self: stretch; width: auto; max-width: 40%; object-fit: contain; }
+.collectivity-logo--corner { display: block; margin: 0 0 1rem auto; max-height: 3.5rem; max-width: 100%; }
 .map-panel, .form-panel { padding: 1rem; border: 1px solid var(--line); border-radius: .8rem; background: var(--panel); box-shadow: 0 2px 10px #0008; }
 .overview-layout { display: grid; grid-template-columns: minmax(0, 1.7fr) minmax(0, 1fr); gap: 1rem; align-items: stretch; }
 .overview-layout, .overview-legend { grid-column: 1 / -1; }

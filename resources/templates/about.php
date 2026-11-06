@@ -8,7 +8,7 @@
 </head>
 <body class="outdoor-mode">
 <?php require __DIR__ . '/partials/header.php'; ?>
-<main class="auth-page about-page">
+<main class="auth-page about-page"><?php $collectivityLogoVariant = 'corner'; require __DIR__ . '/partials/collectivity-logo.php'; ?>
   <h1>À propos</h1>
   <section>
     <h2>Un outil pour agir ensemble</h2>

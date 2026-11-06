@@ -12,7 +12,7 @@
 <body class="outdoor-mode">
 <?php require __DIR__ . '/partials/header.php'; ?>
 <main class="page-layout">
-  <section class="intro"><h1><?= htmlspecialchars($application['name'], ENT_QUOTES, 'UTF-8') ?></h1><p>Les plantations, dons et recensements validés par la collectivité.</p></section>
+  <section class="intro"><div class="intro-text"><h1><?= htmlspecialchars($application['name'], ENT_QUOTES, 'UTF-8') ?></h1><p>Les plantations, dons et recensements validés par la collectivité.</p></div><?php require __DIR__ . '/partials/collectivity-logo.php'; ?></section>
   <div class="overview-layout">
     <section class="overview-map-panel map-panel" aria-label="Carte des contributions validées">
       <div id="overview-map" class="overview-map" role="application" aria-label="Carte du territoire"></div>
