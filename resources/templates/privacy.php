@@ -1,6 +1,6 @@
 <!doctype html>
 <html lang="fr">
-<head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><link rel="stylesheet" href="<?= htmlspecialchars($url('/public/css/app.css'), ENT_QUOTES, 'UTF-8') ?>"><title>Données personnelles · <?= htmlspecialchars($application['name'], ENT_QUOTES, 'UTF-8') ?></title></head>
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><link rel="stylesheet" href="<?= htmlspecialchars($url('/public/css/app.css'), ENT_QUOTES, 'UTF-8') ?>"><?php require __DIR__ . '/partials/favicon.php'; ?><title>Données personnelles · <?= htmlspecialchars($application['name'], ENT_QUOTES, 'UTF-8') ?></title></head>
 <body class="outdoor-mode"><?php require __DIR__ . '/partials/header.php'; ?>
 <main class="auth-page privacy-page"><?php $collectivityLogoVariant = 'corner'; require __DIR__ . '/partials/collectivity-logo.php'; ?>
   <h1>Données personnelles</h1>
