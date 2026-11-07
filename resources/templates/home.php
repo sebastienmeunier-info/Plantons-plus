@@ -6,7 +6,7 @@
     <meta name="theme-color" content="#0d2115">
     <title><?= htmlspecialchars($application['name'], ENT_QUOTES, 'UTF-8') ?></title>
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
-    <link rel="stylesheet" href="<?= htmlspecialchars($url('/public/css/app.css'), ENT_QUOTES, 'UTF-8') ?>">
+    <link rel="stylesheet" href="<?= htmlspecialchars($url('/public/css/app.css'), ENT_QUOTES, 'UTF-8') ?>"><?php require __DIR__ . '/partials/favicon.php'; ?>
     <style>:root { --marker-scale-width: <?= (float) $map['marker_width_coefficient'] ?>; --marker-scale-height: <?= (float) $map['marker_height_coefficient'] ?>; }</style>
 </head>
 <body class="outdoor-mode">

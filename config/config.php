@@ -78,6 +78,10 @@ return [
         // Exemple avec une URL complète :
         // 'collectivity_logo_url' => 'https://apps.sebastienmeunier.info/plantons/public/logo-collectivite.svg',
         'collectivity_logo_url' => getenv('PLANTONS_COLLECTIVITY_LOGO_URL') ?: '',
+        // Favicon (icône d'onglet navigateur), basée sur le logo de
+        // l'application. Fournie par le BrandKit ; remplacer par l'URL de
+        // votre choix si besoin.
+        'favicon_url' => getenv('PLANTONS_FAVICON_URL') ?: $basePath . '/docs/brankit/02_Logos/SVG/Favicon.svg',
         // 'development' ou 'production' (via PLANTONS_ENV).
         'environment' => $environment,
         // En production, passer PLANTONS_DEBUG=0 pour masquer les détails d'erreur.

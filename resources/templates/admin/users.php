@@ -1,7 +1,7 @@
 <!doctype html>
 <html lang="fr">
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<link rel="stylesheet" href="<?= htmlspecialchars($url('/public/css/app.css'), ENT_QUOTES, 'UTF-8') ?>"><title>Utilisateurs · <?= htmlspecialchars($application['name']) ?></title>
+<link rel="stylesheet" href="<?= htmlspecialchars($url('/public/css/app.css'), ENT_QUOTES, 'UTF-8') ?>"><?php require __DIR__ . '/../partials/favicon.php'; ?><title>Utilisateurs · <?= htmlspecialchars($application['name']) ?></title>
 <body class="outdoor-mode">
 <?php require __DIR__ . '/../partials/header.php'; ?>
 <main class="auth-page admin-page">
