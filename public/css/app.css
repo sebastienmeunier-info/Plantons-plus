@@ -23,7 +23,7 @@ button { cursor: pointer; }
 .legend-tile.is-off { opacity: .45; }
 .legend-tile .legend-marker { flex: none; }
 .overview-legend span { display: inline-flex; align-items: center; gap: .45rem; }
-@media (max-width: 62rem) { .overview-layout { grid-template-columns: 1fr; } .overview-map { min-height: 20rem; } }
+@media (max-width: 62rem) { .overview-layout { grid-template-columns: 1fr; } .overview-map { min-height: 20rem; } .overview-legend { padding: .6rem .75rem; } .legend-tiles { gap: .35rem; } .legend-tile { padding: .3rem .5rem; border-radius: .4rem; font-size: .82rem; gap: .3rem; } .legend-tile .legend-marker { width: 1.05rem; height: 1.05rem; font-size: .75rem; } }
 #map { height: min(42svh, 24rem); margin-top: .75rem; border-radius: .55rem; overflow: hidden; border: 1px solid #5a7160; }
 .address-search label, #proposal-form > label, fieldset { display: grid; gap: .45rem; margin-bottom: 1rem; color: #fff; font-weight: 700; }.address-search > div { display: flex; gap: .5rem; }
 input, select, textarea { width: 100%; min-height: 3rem; padding: .65rem .75rem; border: 2px solid var(--line); border-radius: .45rem; background: #0f1511; color: #fff; } input::placeholder, textarea::placeholder { color: #b7c3b9; opacity: 1; } textarea { min-height: 7rem; resize: vertical; }
